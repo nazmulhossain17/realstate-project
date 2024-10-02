@@ -1,6 +1,7 @@
 import Container from "../Container";
+import Categories from "./Categories";
 import Logo from "./Logo";
-import Search from "./Search";
+import SearchFilter from "./Search";
 import UserMenu from "./UserMenu";
 
 const Navbar = () => {
@@ -10,11 +11,12 @@ const Navbar = () => {
         <Container>
           <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
             <Logo />
-            <Search />
+            <SearchFilter />
             <UserMenu />
           </div>
         </Container>
       </div>
+      <Categories />
     </div>
   );
 };
