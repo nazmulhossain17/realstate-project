@@ -1,10 +1,12 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { Search, Calendar, Users } from "lucide-react";
+import { Search } from "lucide-react";
 
-const SearchFilter = () => {
+const SearchFilter = ({ onSearch }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
+  const [selectedLocation, setSelectedLocation] = useState("");
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -16,34 +18,6 @@ const SearchFilter = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  const suggestedDestinations = [
-    {
-      name: "Toronto, Canada",
-      description: "For sights like CN Tower",
-      icon: "🏛️",
-    },
-    {
-      name: "Bangkok, Thailand",
-      description: "For its bustling nightlife",
-      icon: "🏯",
-    },
-    {
-      name: "London, United Kingdom",
-      description: "For its stunning architecture",
-      icon: "🌉",
-    },
-    {
-      name: "New York City, NY",
-      description: "For its top-notch dining",
-      icon: "🗽",
-    },
-    {
-      name: "Vancouver, Canada",
-      description: "For sights like Stanley Park",
-      icon: "🌲",
-    },
-  ];
 
   const [guestCounts, setGuestCounts] = useState({
     Adults: 0,
@@ -59,88 +33,71 @@ const SearchFilter = () => {
     }));
   };
 
+  const locations = [
+    "Toronto, Canada",
+    "Bangkok, Thailand",
+    "London, United Kingdom",
+    "New York City, NY",
+    "Vancouver, Canada",
+  ];
+
+  const filteredLocations = locations.filter((location) =>
+    location.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleSearch = () => {
+    // Call the onSearch prop with the selected location
+    if (selectedLocation) {
+      onSearch(selectedLocation);
+    }
+  };
+
   return (
     <div className="flex-1 md:flex-none md:w-auto" ref={dropdownRef}>
-      <div className="relative flex items-center justify-center mx-auto transition duration-300 bg-white border rounded-full shadow-sm hover:shadow-md max-w-[850px]">
-        {/* Where Section */}
-        <div className="relative">
-          <button
-            onClick={() =>
-              setActiveDropdown(
-                activeDropdown === "destination" ? null : "destination"
-              )
-            }
-            className={`flex items-center h-[40px] px-4 text-left rounded-l-full hover:bg-gray-100 transition duration-200
-              ${activeDropdown === "destination" ? "bg-gray-100" : ""}`}
-          >
-            <span className="hidden text-sm font-medium md:block">
-              Anywhere
-            </span>
-            <span className="block text-sm font-medium md:hidden">Search</span>
-          </button>
-
-          {/* Destination Dropdown */}
-          {activeDropdown === "destination" && (
-            <div className="absolute left-0 w-80 bg-white rounded-2xl shadow-xl border p-4 z-50 top-[calc(100%+24px)]">
-              <h3 className="mb-4 font-semibold">Suggested destinations</h3>
-              <div className="space-y-2">
-                {suggestedDestinations.map((dest) => (
-                  <div
-                    key={dest.name}
-                    className="flex items-center gap-3 p-3 transition duration-200 rounded-lg cursor-pointer hover:bg-gray-50"
-                  >
-                    <span className="text-2xl">{dest.icon}</span>
-                    <div>
-                      <div className="font-semibold">{dest.name}</div>
-                      <div className="text-sm text-gray-500">
-                        {dest.description}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Divider */}
-        <div className="h-[24px] w-[1px] bg-gray-200 hidden md:block" />
-
-        {/* Check in Section */}
+      <div className="relative flex items-center justify-between mx-auto transition duration-300 bg-white border rounded-full shadow-sm hover:shadow-md max-w-[850px]">
+        {/* Anywhere Section */}
         <div className="relative hidden md:block">
           <button
             onClick={() =>
               setActiveDropdown(
-                activeDropdown === "calendar" ? null : "calendar"
+                activeDropdown === "location" ? null : "location"
               )
             }
             className={`flex items-center h-[40px] px-4 text-left hover:bg-gray-100 transition duration-200
-              ${activeDropdown === "calendar" ? "bg-gray-100" : ""}`}
+              ${activeDropdown === "location" ? "bg-gray-100" : ""}`}
           >
-            <span className="text-sm font-medium">Any week</span>
+            <span className="text-sm font-medium">
+              {selectedLocation || "Anywhere"}
+            </span>
           </button>
 
-          {/* Calendar Dropdown */}
-          {activeDropdown === "calendar" && (
-            <div className="absolute left-1/2 -translate-x-1/2 w-[500px] bg-white rounded-2xl shadow-xl border p-4 z-50 top-[calc(100%+24px)]">
-              <div className="flex gap-4 mb-4">
-                <button className="px-4 py-2 text-sm font-semibold bg-gray-100 rounded-full">
-                  Dates
-                </button>
-                <button className="px-4 py-2 text-sm transition duration-200 rounded-full hover:bg-gray-100">
-                  Months
-                </button>
-                <button className="px-4 py-2 text-sm transition duration-200 rounded-full hover:bg-gray-100">
-                  Flexible
-                </button>
-              </div>
-              <div className="flex justify-center gap-4">
-                <div className="w-[220px] h-[240px] bg-gray-50 rounded-lg flex items-center justify-center text-gray-400">
-                  Calendar
-                </div>
-                <div className="w-[220px] h-[240px] bg-gray-50 rounded-lg flex items-center justify-center text-gray-400">
-                  Calendar
-                </div>
+          {/* Locations Dropdown */}
+          {activeDropdown === "location" && (
+            <div className="absolute right-0 w-80 bg-white rounded-2xl shadow-xl border p-4 z-50 top-[calc(100%+24px)]">
+              <input
+                type="text"
+                placeholder="Search destinations"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full p-2 mb-4 border rounded-lg focus:outline-none"
+              />
+              <div className="space-y-4">
+                {filteredLocations.length > 0 ? (
+                  filteredLocations.map((location) => (
+                    <div
+                      key={location}
+                      className="flex items-center p-2 rounded-lg cursor-pointer hover:bg-gray-100"
+                      onClick={() => {
+                        setSelectedLocation(location);
+                        setActiveDropdown(null);
+                      }}
+                    >
+                      <span className="text-sm font-medium">{location}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-2 text-gray-500">No results found</div>
+                )}
               </div>
             </div>
           )}
@@ -214,7 +171,10 @@ const SearchFilter = () => {
         </div>
 
         {/* Search Button */}
-        <button className="flex items-center gap-2 h-[40px] px-4 text-white transition duration-300 rounded-full bg-rose-500 hover:bg-rose-600">
+        <button
+          onClick={handleSearch} // Trigger search on click
+          className="flex items-center gap-2 h-[40px] px-4 text-white transition duration-300 rounded-full bg-rose-500 hover:bg-rose-600"
+        >
           <Search size={16} />
           <span className="hidden font-medium md:block">Search</span>
         </button>

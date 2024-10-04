@@ -1,5 +1,7 @@
 "use client";
+
 import Container from "../Container";
+import { usePathname, useSearchParams } from "next/navigation";
 import { TbBeach, TbMountain, TbPool } from "react-icons/tb";
 import {
   GiBarn,
@@ -94,7 +96,17 @@ export const categories = [
     description: "This property is brand new and luxurious!",
   },
 ];
+
 const Categories = () => {
+  const params = useSearchParams();
+  const category = params?.get("category"); // Get selected category from query params
+  const pathname = usePathname();
+  const isMainPage = pathname === "/"; // Only show categories on the homepage
+
+  if (!isMainPage) {
+    return null;
+  }
+
   return (
     <Container>
       <div className="flex flex-row items-center justify-between pt-4 overflow-x-auto">
@@ -102,8 +114,8 @@ const Categories = () => {
           <CategoryBox
             key={item.label}
             label={item.label}
-            description={item.description}
             icon={item.icon}
+            selected={category === item.label} // Highlight selected category
           />
         ))}
       </div>
