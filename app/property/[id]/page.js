@@ -16,7 +16,7 @@ export default function PropertyView({ params }) {
       const fetchProperty = async () => {
         try {
           const response = await fetch(
-            `https://airbnb-node-api-nazmulhossain17-nazmulhossain17s-projects.vercel.app/api/properties/${id}`
+            `http://localhost:5000/api/properties/${id}`
           );
 
           if (!response.ok) {

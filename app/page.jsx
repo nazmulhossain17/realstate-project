@@ -35,7 +35,7 @@ export default function Home() {
         }
 
         const response = await fetch(
-          `https://airbnb-node-api-nazmulhossain17-nazmulhossain17s-projects.vercel.app/api/properties?${queryParams.toString()}`
+          `http://localhost:5000/api/properties?${queryParams.toString()}`
         );
 
         if (!response.ok) {
