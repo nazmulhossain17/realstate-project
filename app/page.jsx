@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import PropertyCard from "./components/PropertyCard";
 import { useSearchParams } from "next/navigation";
+import Loading from "./loading";
 
 export default function Home() {
   const [properties, setProperties] = useState([]);
@@ -28,7 +29,7 @@ export default function Home() {
         }
 
         const response = await fetch(
-          `http://localhost:5000/api/properties?${queryParams.toString()}`
+          `https://airbnb-node-api-nazmulhossain17-nazmulhossain17s-projects.vercel.app/api/properties?${queryParams.toString()}`
         );
 
         if (!response.ok) {
@@ -49,7 +50,11 @@ export default function Home() {
   }, [category, selectedLocation]); // Fetch whenever category or selected location changes
 
   if (loading) {
-    return <div className="p-6">Loading...</div>;
+    return (
+      <div className="p-6">
+        <Loading />
+      </div>
+    );
   }
 
   if (error) {

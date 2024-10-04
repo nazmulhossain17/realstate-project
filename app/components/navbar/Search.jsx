@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
+import CalendarDropdown from "../CalanderDropdown";
 
 const SearchFilter = ({ onSearch }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -48,7 +49,7 @@ const SearchFilter = ({ onSearch }) => {
   const handleSearch = () => {
     // Call the onSearch prop with the selected location
     if (selectedLocation) {
-      onSearch(selectedLocation);
+      // onSearch(selectedLocation);
     }
   };
 
@@ -101,6 +102,24 @@ const SearchFilter = ({ onSearch }) => {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Calendar Section */}
+        <div className="relative hidden md:block">
+          <button
+            onClick={() =>
+              setActiveDropdown(
+                activeDropdown === "calendar" ? null : "calendar"
+              )
+            }
+            className={`flex items-center h-[40px] px-4 text-left hover:bg-gray-100 transition duration-200
+              ${activeDropdown === "calendar" ? "bg-gray-100" : ""}`}
+          >
+            <span className="text-sm font-medium">Any week</span>
+          </button>
+
+          {/* Calendar Dropdown */}
+          {activeDropdown === "calendar" && <CalendarDropdown />}
         </div>
 
         {/* Divider */}
@@ -173,10 +192,10 @@ const SearchFilter = ({ onSearch }) => {
         {/* Search Button */}
         <button
           onClick={handleSearch} // Trigger search on click
-          className="flex items-center gap-2 h-[40px] px-4 text-white transition duration-300 rounded-full bg-rose-500 hover:bg-rose-600"
+          className="flex items-center gap-2 h-[40px] px-4 text-white transition duration-200 bg-[#ff385c] rounded-full hover:bg-[#ff4e79]"
         >
-          <Search size={16} />
-          <span className="hidden font-medium md:block">Search</span>
+          <Search size={18} />
+          <span className="hidden md:block">Search</span>
         </button>
       </div>
     </div>

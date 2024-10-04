@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Heart, Share, Flag, Laptop, Key, Car } from "lucide-react";
+import Loading from "@/app/loading";
 
 export default function PropertyView({ params }) {
   const [property, setProperty] = useState(null);
@@ -14,7 +15,7 @@ export default function PropertyView({ params }) {
       const fetchProperty = async () => {
         try {
           const response = await fetch(
-            `http://localhost:5000/api/properties/${id}`
+            `https://airbnb-node-api-nazmulhossain17-nazmulhossain17s-projects.vercel.app/api/properties/${id}`
           );
 
           if (!response.ok) {
@@ -35,7 +36,11 @@ export default function PropertyView({ params }) {
   }, [id]);
 
   if (loading) {
-    return <div className="p-6">Loading...</div>;
+    return (
+      <div className="p-6">
+        <Loading />
+      </div>
+    );
   }
 
   if (error) {
