@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import PropertyCard from "./components/PropertyCard";
+import PropertyCard from "../components/PropertyCard";
 import { useSearchParams } from "next/navigation";
 import Loading from "./loading";
 
@@ -8,9 +8,15 @@ export default function Home() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isClient, setIsClient] = useState(false); // New state to check if it's client-side
   const searchParams = useSearchParams();
-  const category = searchParams?.get("category") || ""; // Get category from URL
+  const category = isClient ? searchParams?.get("category") || "" : ""; // Only use on client-side
   const [selectedLocation, setSelectedLocation] = useState("");
+
+  // Check if the component is mounted on the client-side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -46,8 +52,10 @@ export default function Home() {
       }
     };
 
-    fetchProperties();
-  }, [category, selectedLocation]); // Fetch whenever category or selected location changes
+    if (isClient) {
+      fetchProperties(); // Only fetch properties after client-side rendering
+    }
+  }, [category, selectedLocation, isClient]); // Include isClient as a dependency
 
   if (loading) {
     return (
