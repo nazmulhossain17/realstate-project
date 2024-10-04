@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Heart, Share, Flag, Laptop, Key, Car } from "lucide-react";
 import Loading from "@/app/loading";
+import Image from "next/image";
 
 export default function PropertyView({ params }) {
   const [property, setProperty] = useState(null);
@@ -86,7 +87,7 @@ export default function PropertyView({ params }) {
       {/* Image Gallery */}
       <div className="relative grid grid-cols-4 gap-2 mt-6">
         <div className="col-span-2 row-span-2">
-          <img
+          <Image
             src={property.images[0]}
             alt={property.location}
             className="object-cover w-full h-full rounded-l-xl"
@@ -95,9 +96,12 @@ export default function PropertyView({ params }) {
         <div className="grid grid-cols-2 col-span-2 gap-2">
           {property.images.slice(1, 5).map((image, i) => (
             <div key={i}>
-              <img
+              <Image
                 src={image}
                 alt={`Gallery ${i + 1}`}
+                layout="responsive" // Optional: Set layout and dimensions
+                width={500}
+                height={500}
                 className={`w-full h-full object-cover ${
                   i === 1 ? "rounded-tr-xl" : i === 3 ? "rounded-br-xl" : ""
                 }`}
@@ -138,7 +142,7 @@ export default function PropertyView({ params }) {
               <div>
                 <h3 className="font-semibold">Dedicated workspace</h3>
                 <p className="text-gray-500">
-                  A common area with wifi that's well-suited for working.
+                  A common area with wifi that&apos;s well-suited for working.
                 </p>
               </div>
             </div>
@@ -209,7 +213,7 @@ export default function PropertyView({ params }) {
             </button>
 
             <div className="text-center text-gray-500">
-              You won't be charged yet
+              You won&apos;t be charged yet
             </div>
 
             <div className="space-y-4">

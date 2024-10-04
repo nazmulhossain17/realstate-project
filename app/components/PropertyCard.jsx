@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react"; // Import icons
+import Image from "next/image";
 
 const PropertyCard = ({ property }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -33,7 +34,7 @@ const PropertyCard = ({ property }) => {
     <Link href={`/property/${property._id}`}>
       <div className="flex flex-col space-y-2 cursor-pointer">
         <div className="relative aspect-[1/1] w-full overflow-hidden rounded-xl">
-          <img
+          <Image
             src={property.images[currentImageIndex]}
             alt={property.location}
             className="object-cover w-full h-full transition hover:scale-105"
