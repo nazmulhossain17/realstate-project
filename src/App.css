@@ -1,0 +1,7 @@
+@media (max-width: 1024px) {
+  .absolute.right-0.top-1/2 {
+    position: static;
+    transform: none;
+    margin: 2rem auto;
+  }
+}
